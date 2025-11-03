@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>編輯成績</h2>
+    <h4>{{ course.name }} ({{ course.code }})</h4>
+    <h5>學生: {{ student.name }}</h5>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+        
+        <div class="alert alert-danger">
+            請修正下列錯誤:
+            {{ form.errors }}
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+            {{ form.midterm_score.label_tag }}
+            {{ form.midterm_score }}
+            {% if form.midterm_score.help_text %}
+            <div class="form-text">{{ form.midterm_score.help_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.final_score.label_tag }}
+            {{ form.final_score }}
+            {% if form.final_score.help_text %}
+            <div class="form-text">{{ form.final_score.help_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">儲存</button>
+            <a href="{% url 'courses:course_detail' enrollment.course.id %}" class="btn btn-secondary">返回</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

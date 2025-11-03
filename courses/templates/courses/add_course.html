@@ -1,0 +1,48 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+  <h2>新增課程</h2>
+
+  <form method="post" class="mt-3">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="mb-3">
+      {{ form.name.label_tag }}
+      {{ form.name }}
+      {% for err in form.name.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.code.label_tag }}
+      {{ form.code }}
+      {% for err in form.code.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.teacher.label_tag }}
+      {{ form.teacher }}
+      {% for err in form.teacher.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.new_teacher.label_tag }}
+      {{ form.new_teacher }}
+      {% for err in form.new_teacher.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">建立課程</button>
+      <a href="{% url 'courses:index' %}" class="btn btn-secondary ms-2">取消</a>
+    </div>
+  </form>
+
+{% endblock %}

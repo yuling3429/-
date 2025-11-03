@@ -1,0 +1,59 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+  <h2>課程資料：{{ course.name }}</h2>
+  <p>
+    <a href="javascript:history.back()">◀ 回上一頁</a>
+    &nbsp;|&nbsp;
+    <a href="{% url 'courses:index' %}">回首頁</a>
+  </p>
+  {% if student %}
+    {% if is_enrolled %}
+      <form method="post" action="{% url 'courses:unenroll' course.pk %}">
+        {% csrf_token %}
+        <button type="submit">退選此課</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'courses:enroll' course.pk %}">
+        {% csrf_token %}
+        <button type="submit">加選此課</button>
+      </form>
+    {% endif %}
+  {% else %}
+    <p>系統尚無學生紀錄，無法加選/退選。</p>
+  {% endif %}
+  <ul>
+    <li>課名: <strong>{{ course.name }}</strong></li>
+    <li>課號: <strong>{{ course.code }}</strong></li>
+    <li>任課老師: <strong>{{ course.teacher.name }}</strong></li>
+  </ul>
+
+  <h3 class="mt-4">修課學生與成績</h3>
+  <table class="table table-bordered mt-2">
+    <thead>
+      <tr>
+        <th>學生</th>
+        <th>期中分數</th>
+        <th>期末分數</th>
+        <th>平均分數</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for en in enrollments %}
+        <tr>
+          <td>{{ en.student.name }}</td>
+          <td>{{ en.midterm_score }}</td>
+          <td>{{ en.final_score }}</td>
+          <td>{% if en.average_score %}{{ en.average_score|floatformat:1 }}{% else %}-{% endif %}</td>
+          <td>
+            <!-- 編輯分數按鈕已移除 -->
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">目前無修課學生</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
